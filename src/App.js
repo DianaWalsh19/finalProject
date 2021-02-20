@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Readings from "./components/readings";
-import './App.css';
+import "./App.css";
 
 class App extends Component {
-  render(){
+  render() {
     return (
       <main className="container">
         <Readings />
