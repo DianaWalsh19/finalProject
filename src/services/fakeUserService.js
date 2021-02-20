@@ -1,6 +1,6 @@
-import * as readingsAPI from "./fakeReadingService";
+//import * as readingsAPI from "./fakeReadingService";
 
-const users = [
+export const users = [
     {
         _id: "5sdf6s65f55afcccd2001", 
         email: "patient1@patients.com",
@@ -10,5 +10,5 @@ const users = [
 
 export function getUsers() {
     return users.filter(u => u);
-  }
+}
   

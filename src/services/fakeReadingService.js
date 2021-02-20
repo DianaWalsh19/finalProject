@@ -34,7 +34,7 @@ export function getReadings(){
 }
 
 export function getReading(id){
-    return reading.find(r => r.id === id);
+    return readings.find(r => r.id === id);
 }
 
 export function saveReading(reading) {
