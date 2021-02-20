@@ -5,7 +5,7 @@ const readings = [
         _id: "5sdf6s65f55afdsdf2020",
         user: { _id: "5sdf6s65f55afcccd2001", email: "patient1@patients.com"},
         value: 400,
-        preMed: true,
+        preMed: "yes",
         dateTime: "2020-01-23T19:04:28.8092",
         notes: "sfdsdfsdf"
     },
@@ -14,7 +14,7 @@ const readings = [
         _id: "5sdf6s65f55afdsdf2021",
         user: { _id: "5sdf6s65f55afcccd2001", email: "patient1@patients.com"},
         value: 380,
-        preMed: false,
+        preMed: "no",
         dateTime: "2020-01-24T09:04:28.8092",
         notes: "sfdsdfsdf"
     },
@@ -23,7 +23,7 @@ const readings = [
         _id: "5sdf6s65f55afdsdf2022",
         user: { _id: "5sdf6s65f55afcccd2001", email: "patient1@patients.com"},
         value: 410,
-        preMed: true,
+        preMed: "yes",
         dateTime: "2020-01-24T19:04:28.8092",
         notes: "sfdsdfsdf"
     }
