@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+import Pagination from "./common/pagination";
 import { getReadings } from "../services/fakeReadingService";
+import { paginate } from "../utils/paginate";
 
 class Readings extends Component {
   state = {
     readings: getReadings(),
+    currentPage: 1,
+    pageSize: 4,
   };
 
   handleDelete = (reading) => {
@@ -11,10 +15,17 @@ class Readings extends Component {
     this.setState({ readings });
   };
 
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
+  };
+
   render() {
     const { length: count } = this.state.readings;
+    const { pageSize, currentPage, readings: allReadings } = this.state;
 
     if (count === 0) return <p>There are no readings in the database.</p>;
+
+    const readings = paginate(allReadings, currentPage, pageSize);
 
     return (
       <React.Fragment>
@@ -31,7 +42,7 @@ class Readings extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.readings.map((reading) => (
+            {readings.map((reading) => (
               <tr key={reading._id}>
                 <td>{reading.user.email}</td>
                 <td>{reading.value}</td>
@@ -50,6 +61,12 @@ class Readings extends Component {
             ))}
           </tbody>
         </table>
+        <Pagination
+          itemsCount={count}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        />
       </React.Fragment>
     );
   }
