@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import ReadingsTable from "./readingsTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
 import { getReadings } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
+import _ from "lodash";
 
 class Readings extends Component {
   state = {
@@ -11,11 +13,11 @@ class Readings extends Component {
     users: [],
     currentPage: 1,
     pageSize: 4,
+    sortColumn: { path: "user.email", order: "asc" },
   };
 
   componentDidMount() {
-    const users = [{ email: "All Users" }, ...getUsers()];
-
+    const users = [{ _id: "", email: "All Users" }, ...getUsers()];
     this.setState({ readings: getReadings(), users });
   }
 
@@ -32,11 +34,23 @@ class Readings extends Component {
     this.setState({ selectedUser: user, currentPage: 1 });
   };
 
+  handleSort = (path) => {
+    const sortColumn = { ...this.state.sortColumn };
+    if (sortColumn.path === path)
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+    this.setState({ sortColumn });
+  };
+
   render() {
     const { length: count } = this.state.readings;
     const {
       pageSize,
       currentPage,
+      sortColumn,
       selectedUser,
       readings: allReadings,
     } = this.state;
@@ -48,52 +62,26 @@ class Readings extends Component {
         ? allReadings.filter((r) => r.user._id === selectedUser._id)
         : allReadings;
 
-    const readings = paginate(filtered, currentPage, pageSize);
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+    const readings = paginate(sorted, currentPage, pageSize);
 
     return (
       <div className="row">
         <div className="col-3">
           <ListGroup
             items={this.state.users}
-            //textProperty="email"
-            //valueProperty="_id"
             selectedItem={this.state.selectedUser}
             onItemSelect={this.handleUserSelect}
           />
         </div>
         <div className="col">
           <p>Showing {filtered.length} readings in the database.</p>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>User email</th>
-                <th>Reading Value</th>
-                <th>Date and Time</th>
-                <th>Pre/Post Medication</th>
-                <th>Notes</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {readings.map((reading) => (
-                <tr key={reading._id}>
-                  <td>{reading.user.email}</td>
-                  <td>{reading.value}</td>
-                  <td>{reading.dateTime}</td>
-                  <td>{reading.preMed}</td>
-                  <td>{reading.notes}</td>
-                  <td>
-                    <button
-                      onClick={() => this.handleDelete(reading)}
-                      className="btn btn-danger btn-sm"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <ReadingsTable
+            readings={readings}
+            onDelete={this.handleDelete}
+            onSort={this.handleSort}
+          />
           <Pagination
             itemsCount={filtered.length}
             pageSize={pageSize}
