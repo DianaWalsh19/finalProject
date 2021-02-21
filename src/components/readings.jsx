@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
 import { getReadings } from "../services/fakeReadingService";
-import { paginate } from "../utils/paginate";
 import { getUsers } from "../services/fakeUserService";
+import { paginate } from "../utils/paginate";
 
 class Readings extends Component {
   state = {
@@ -14,7 +14,9 @@ class Readings extends Component {
   };
 
   componentDidMount() {
-    this.steState({ readings: getReadings(), users: getUsers() });
+    const users = [{ email: "All Users" }, ...getUsers()];
+
+    this.setState({ readings: getReadings(), users });
   }
 
   handleDelete = (reading) => {
@@ -27,27 +29,40 @@ class Readings extends Component {
   };
 
   handleUserSelect = (user) => {
-    console.log(user);
+    this.setState({ selectedUser: user, currentPage: 1 });
   };
 
   render() {
     const { length: count } = this.state.readings;
-    const { pageSize, currentPage, readings: allReadings } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      selectedUser,
+      readings: allReadings,
+    } = this.state;
 
     if (count === 0) return <p>There are no readings in the database.</p>;
 
-    const readings = paginate(allReadings, currentPage, pageSize);
+    const filtered =
+      selectedUser && selectedUser._id
+        ? allReadings.filter((r) => r.user._id === selectedUser._id)
+        : allReadings;
+
+    const readings = paginate(filtered, currentPage, pageSize);
 
     return (
       <div className="row">
-        <div className="col-2">
+        <div className="col-3">
           <ListGroup
             items={this.state.users}
+            //textProperty="email"
+            //valueProperty="_id"
+            selectedItem={this.state.selectedUser}
             onItemSelect={this.handleUserSelect}
           />
         </div>
         <div className="col">
-          <p>Showing {count} readings in the database.</p>
+          <p>Showing {filtered.length} readings in the database.</p>
           <table className="table">
             <thead>
               <tr>
@@ -80,7 +95,7 @@ class Readings extends Component {
             </tbody>
           </table>
           <Pagination
-            itemsCount={count}
+            itemsCount={filtered.length}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
