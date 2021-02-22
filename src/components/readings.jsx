@@ -38,8 +38,7 @@ class Readings extends Component {
     this.setState({ sortColumn });
   };
 
-  render() {
-    const { length: count } = this.state.readings;
+  getPagedData = () => {
     const {
       pageSize,
       currentPage,
@@ -47,8 +46,6 @@ class Readings extends Component {
       selectedUser,
       readings: allReadings,
     } = this.state;
-
-    if (count === 0) return <p>There are no readings in the database.</p>;
 
     const filtered =
       selectedUser && selectedUser._id
@@ -58,6 +55,17 @@ class Readings extends Component {
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
     const readings = paginate(sorted, currentPage, pageSize);
+
+    return { totalCount: filtered.length, data: readings };
+  };
+
+  render() {
+    const { length: count } = this.state.readings;
+    const { pageSize, currentPage, sortColumn } = this.state;
+
+    if (count === 0) return <p>There are no readings in the database.</p>;
+
+    const { totalCount, data: readings } = this.getPagedData();
 
     return (
       <div className="row">
@@ -69,7 +77,7 @@ class Readings extends Component {
           />
         </div>
         <div className="col">
-          <p>Showing {filtered.length} readings in the database.</p>
+          <p>Showing {totalCount} readings in the database.</p>
           <ReadingsTable
             readings={readings}
             sortColumn={sortColumn}
@@ -77,7 +85,7 @@ class Readings extends Component {
             onSort={this.handleSort}
           />
           <Pagination
-            itemsCount={filtered.length}
+            itemsCount={totalCount}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
