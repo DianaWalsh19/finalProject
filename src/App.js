@@ -4,6 +4,8 @@ import Readings from "./components/readings";
 import Users from "./components/users";
 import NotFound from "./components/notFound";
 import NavBar from "./components/navBar";
+import ReadingForm from "./components/readingForm";
+import LoginForm from "./components/loginForm";
 import "./App.css";
 
 class App extends Component {
@@ -13,6 +15,8 @@ class App extends Component {
         <NavBar />
         <main className="container">
           <Switch>
+            <Route path="/login" component={LoginForm} />
+            <Route path="/readings/:id" component={ReadingForm} />
             <Route path="/users" component={Users} />
             <Route path="/readings" component={Readings} />
             <Route path="/not-found" component={NotFound} />

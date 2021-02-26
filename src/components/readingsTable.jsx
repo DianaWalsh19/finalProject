@@ -1,10 +1,17 @@
 import React, { Component } from "react";
+import { Link, NavLink } from "react-router-dom";
 import Table from "./common/table";
 
 class ReadingsTable extends Component {
   columns = [
     { path: "user.email", label: "User Email" },
-    { path: "value", label: "Reading Value" },
+    {
+      path: "value",
+      label: "Reading Value",
+      content: (reading) => (
+        <Link to={`/readings/${reading._id}`}>{reading.value}</Link>
+      ),
+    },
     { path: "dateTime", label: "Date and Time" },
     { path: "preMed", label: "Pre/Post Medication" },
     { path: "notes", label: "Notes" },
