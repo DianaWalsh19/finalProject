@@ -6,16 +6,26 @@ import { getUsers } from "../services/fakeUserService";
 
 class ReadingForm extends Form {
   state = {
-    data: { value: "", userId: "", preMed: "", dateTime: "", notes: "" },
+    data: {
+      value: "",
+      userId: "",
+      email: "",
+      preMed: "",
+      dateTime: "",
+      notes: "",
+    },
+    users: [],
     errors: {},
   };
 
   schema = {
     _id: Joi.string(),
-    value: Joi.number().required().label("Value"),
+    value: Joi.number().label("Value"),
+    userId: Joi.string().required().label("User ID"),
+    email: Joi.string().required().label("Email"),
     preMed: Joi.string().required().label("PreMedication"),
     dateTime: Joi.string().required().label("Date and Time"),
-    notes: Joi.string().required().label("Notes"),
+    notes: Joi.string().label("Notes"),
   };
 
   componentDidMount() {
@@ -35,6 +45,7 @@ class ReadingForm extends Form {
     return {
       _id: reading._id,
       userId: reading.user._id,
+      email: reading.user.email,
       value: reading.value,
       preMed: reading.preMed,
       dateTime: reading.dateTime,
@@ -52,6 +63,8 @@ class ReadingForm extends Form {
         <h1>New Reading</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("value", "Value")}
+          {this.renderSelect("userId", "User ID", this.state.users)}
+          {this.renderSelect("email", "Email", this.state.users)}
           {this.renderInput("preMed", "PreMedication")}
           {this.renderInput("dateTime", "Date and Time")}
           {this.renderInput("notes", "Notes")}

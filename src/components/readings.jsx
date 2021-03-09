@@ -80,7 +80,7 @@ class Readings extends Component {
         <div className="col">
           <Link
             to="/readings/new"
-            classname="btn btn-primary"
+            className="btn btn-primary"
             style={{ marginBottom: 20 }}
           >
             New Reading
