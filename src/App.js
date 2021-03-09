@@ -20,6 +20,7 @@ class App extends Component {
             <Route path="/login" component={LoginForm} />
             <Route path="/readings/:id" component={ReadingForm} />
             <Route path="/users" component={Users} />
+            <Route path="/readings/new" component={ReadingForm} />
             <Route path="/readings" component={Readings} />
             <Route path="/not-found" component={NotFound} />
             <Redirect from="/" exact to="/users" />

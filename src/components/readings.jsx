@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReadingsTable from "./readingsTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
+import { Link } from "react-router-dom";
 import { getReadings } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
@@ -77,6 +78,13 @@ class Readings extends Component {
           />
         </div>
         <div className="col">
+          <Link
+            to="/readings/new"
+            classname="btn btn-primary"
+            style={{ marginBottom: 20 }}
+          >
+            New Reading
+          </Link>
           <p>Showing {totalCount} readings in the database.</p>
           <ReadingsTable
             readings={readings}

@@ -63,7 +63,7 @@ export function saveReading(reading) {
   readingInDb.notes = reading.notes;
 
   if (!readingInDb._id) {
-    readingInDb._id = Date.now();
+    readingInDb._id = Date.now().toString();
     readings.push(readingInDb);
   }
 
