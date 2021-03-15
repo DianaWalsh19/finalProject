@@ -26,7 +26,7 @@ const NavBar = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/graphic">
+            <NavLink className="nav-link" to="/graph">
               Graphic
             </NavLink>
           </li>
@@ -44,6 +44,15 @@ const NavBar = () => {
             <NavLink className="nav-link" to="/register">
               Register
             </NavLink>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/readings/new"
+              className="btn btn-primary"
+              style={{ marginLeft: 40 }}
+            >
+              New Reading
+            </Link>
           </li>
         </ul>
       </div>

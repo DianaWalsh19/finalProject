@@ -55,6 +55,10 @@ export function getReading(id) {
   return readings.find((r) => r.id === id);
 }
 
+export function getReadingByDate(dateTime) {
+  return readings.find((r) => r.dateTime === dateTime);
+}
+
 export function saveReading(reading) {
   let readingInDb = readings.find((r) => r.mid === reading.mid) || {};
   readingInDb.value = reading.value;

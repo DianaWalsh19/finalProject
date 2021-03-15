@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import ReadingsTable from "./readingsTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
-import { Link } from "react-router-dom";
-import { getReadings } from "../services/fakeReadingService";
+import Dropdown from "./common/dropdown";
+import { getReadings, deleteReading } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
 import _ from "lodash";
@@ -67,6 +67,7 @@ class Readings extends Component {
     if (count === 0) return <p>There are no readings in the database.</p>;
 
     const { totalCount, data: readings } = this.getPagedData();
+    //const [value, setValue] = useState(null);
 
     return (
       <div className="row">
@@ -78,13 +79,9 @@ class Readings extends Component {
           />
         </div>
         <div className="col">
-          <Link
-            to="/readings/new"
-            className="btn btn-primary"
-            style={{ marginBottom: 20 }}
-          >
-            New Reading
-          </Link>
+          <div className="dropdown">
+            <Dropdown name="Pre/Post" items={this.state.readings} multiSelect />
+          </div>
           <p>Showing {totalCount} readings in the database.</p>
           <ReadingsTable
             readings={readings}

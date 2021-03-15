@@ -20,12 +20,12 @@ class ReadingForm extends Form {
 
   schema = {
     _id: Joi.string(),
-    value: Joi.number().label("Value"),
+    value: Joi.number().required().min(0).max(1000).label("Value"),
     userId: Joi.string().required().label("User ID"),
     email: Joi.string().required().label("Email"),
     preMed: Joi.string().required().label("PreMedication"),
     dateTime: Joi.string().required().label("Date and Time"),
-    notes: Joi.string().label("Notes"),
+    notes: Joi.string().allow("").label("Notes"),
   };
 
   componentDidMount() {

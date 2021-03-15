@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Readings from "./components/readings";
 import Users from "./components/users";
+import Graph from "./components/graph";
 import NotFound from "./components/notFound";
 import NavBar from "./components/navBar";
 import ReadingForm from "./components/readingForm";
@@ -18,10 +19,11 @@ class App extends Component {
           <Switch>
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
-            <Route path="/readings/:id" component={ReadingForm} />
             <Route path="/users" component={Users} />
+            <Route path="/readings/:id" component={ReadingForm} />
             <Route path="/readings/new" component={ReadingForm} />
             <Route path="/readings" component={Readings} />
+            <Route path="/graph" component={Graph} />
             <Route path="/not-found" component={NotFound} />
             <Redirect from="/" exact to="/users" />
             <Redirect to="/not-found" />
