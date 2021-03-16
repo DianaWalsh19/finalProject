@@ -11,6 +11,7 @@ import _ from "lodash";
 class Readings extends Component {
   state = {
     readings: [],
+    options: [],
     users: [],
     currentPage: 1,
     pageSize: 4,
@@ -79,9 +80,7 @@ class Readings extends Component {
           />
         </div>
         <div className="col">
-          <div className="dropdown">
-            <Dropdown name="Pre/Post" items={this.state.readings} multiSelect />
-          </div>
+          <div style={{ width: 200 }}></div>
           <p>Showing {totalCount} readings in the database.</p>
           <ReadingsTable
             readings={readings}

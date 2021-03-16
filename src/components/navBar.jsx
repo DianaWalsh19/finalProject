@@ -54,6 +54,15 @@ const NavBar = () => {
               New Reading
             </Link>
           </li>
+          <li className="nav-item">
+            <Link
+              to="/experiment"
+              className="btn btn-danger"
+              style={{ marginLeft: 500 }}
+            >
+              EXPERIMENT
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>

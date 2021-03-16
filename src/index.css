@@ -20,3 +20,9 @@ code {
 .clickable {
   cursor: pointer;
 }
+
+.dropdown {
+  position: relative;
+  color: #333;
+  cursor: default;
+}

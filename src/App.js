@@ -8,7 +8,7 @@ import NavBar from "./components/navBar";
 import ReadingForm from "./components/readingForm";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
-import "./App.css";
+import Experiment from "./components/experiment";
 
 class App extends Component {
   render() {
@@ -20,6 +20,7 @@ class App extends Component {
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/users" component={Users} />
+            <Route path="/experiment" component={Experiment} />
             <Route path="/readings/:id" component={ReadingForm} />
             <Route path="/readings/new" component={ReadingForm} />
             <Route path="/readings" component={Readings} />

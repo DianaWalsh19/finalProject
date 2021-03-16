@@ -1,73 +1,82 @@
-import React, { useState } from "react";
-//import onClickOutside from "react-onclickoutside";
+import React, { useState, useRef, useEffect } from "react";
+import "./dropdownStyle.css";
 
-function Dropdown({ name, items, multiSelect = false }) {
+export default function Dropdown({
+  options,
+  id,
+  label,
+  prompt,
+  value,
+  onChange,
+}) {
   const [open, setOpen] = useState(false);
-  const [selection, setSelection] = useState([]);
-  const toggle = () => setOpen(!open);
-  //Dropdown.handleClickOutside = () => setOpen(false);
+  const [query, setQuery] = useState("");
+  const ref = useRef(null);
 
-  function handleOnClick(item) {
-    if (!selection.some((current) => current.id === item.id)) {
-      if (!multiSelect) {
-        setSelection([item]);
-      } else if (multiSelect) {
-        setSelection([...selection, item]);
-      }
-    } else {
-      let selectionAfterRemoval = selection;
-      selectionAfterRemoval = selectionAfterRemoval.filter(
-        (current) => current.id !== item.id
-      );
-      setSelection([...selectionAfterRemoval]);
-    }
+  useEffect(() => {
+    ["click", "touchend"].forEach((e) => {
+      document.addEventListener(e, toggle);
+    });
+
+    return () =>
+      ["click", "touchend"].forEach((e) => {
+        document.removeEventListener(e, toggle);
+      });
+  }, []);
+
+  function toggle(e) {
+    setOpen(e && e.target === ref.current);
   }
 
-  function isItemInSelection(item) {
-    if (selection.some((current) => current.id === item.id)) {
-      return true;
-    }
-    return false;
+  function filter(options) {
+    return options.filter(
+      (option) => option[label].toLowerCase().indexOf(query.toLowerCase()) > -1
+    );
+  }
+
+  function displayValue() {
+    if (query.length > 0) return query;
+    if (value) return value[label];
+    return "";
+  }
+
+  function selectOption(option) {
+    setQuery("");
+    onChange(option);
+    setOpen(false);
   }
 
   return (
     <div className="dropdown">
-      <div
-        tabIndex={0}
-        role="button"
-        //onKeyPress={() => toggle(!open)}
-        onClick={() => toggle(!open)}
-      >
-        <button
-          class="btn btn-info dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          {name}
-        </button>
-        <div className="dropdown-menu"></div>
+      <div className="control" onClick={() => setOpen((prev) => !prev)}>
+        <div className="select-value">
+          <input
+            type="text"
+            ref={ref}
+            placeholder={value ? value[label] : prompt}
+            value={displayValue()}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              onChange(null);
+            }}
+            onClik={toggle}
+            onTouchEnd={toggle}
+          />
+        </div>
+        <div className={`arrow ${open ? "open" : null}`}></div>
       </div>
-      {open && (
-        <a className="dropdown-item">
-          {items.map((item) => (
-            <li className="dropdown-item" key={item.id}>
-              <button type="button" onClick={() => handleOnClick(item)}>
-                <span>{item.value}</span>
-                <span>{isItemInSelection(item)}</span>
-              </button>
-            </li>
-          ))}
-        </a>
-      )}
+      <div className={`options ${open ? "open" : null}`}>
+        {filter(options).map((option) => (
+          <div
+            key={option[id]}
+            className={`option ${value === option ? "selected" : null}`}
+            onClick={() => selectOption(option)}
+            onTouchEnd={() => selectOption(option)}
+          >
+            {option[label]}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
-
-const clickOutsideConfig = {
-  handleClickOutside: () => Dropdown.handleClickOutside,
-};
-
-export default Dropdown;
