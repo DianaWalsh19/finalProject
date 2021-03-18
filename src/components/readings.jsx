@@ -13,6 +13,7 @@ class Readings extends Component {
     readings: [],
     options: [],
     users: [],
+    value: "",
     currentPage: 1,
     pageSize: 4,
     sortColumn: { path: "user.email", order: "asc" },
@@ -61,6 +62,10 @@ class Readings extends Component {
     return { totalCount: filtered.length, data: readings };
   };
 
+  handleDropdown = (value) => {
+    this.setState({ value });
+  };
+
   render() {
     const { length: count } = this.state.readings;
     const { pageSize, currentPage, sortColumn } = this.state;
@@ -72,6 +77,16 @@ class Readings extends Component {
 
     return (
       <div className="row">
+        <div style={{ width: 200 }}>
+          <Dropdown
+            prompt="Select reading"
+            id="_id"
+            label="dateTime"
+            options={getReadings()}
+            value={this.state.value}
+            onChange={(val) => this.handleDropdown(val)}
+          />
+        </div>
         <div className="col-3">
           <ListGroup
             items={this.state.users}
