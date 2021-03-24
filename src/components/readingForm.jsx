@@ -23,7 +23,7 @@ class ReadingForm extends Form {
     value: Joi.number().required().min(0).max(1000).label("Value"),
     userId: Joi.string().required().label("User ID"),
     email: Joi.string().required().label("Email"),
-    preMed: Joi.string().required().label("PreMedication"),
+    preMed: Joi.string().required().label("Pre or Post Medication"),
     dateTime: Joi.string().required().label("Date and Time"),
     notes: Joi.string().allow("").label("Notes"),
   };
@@ -52,6 +52,13 @@ class ReadingForm extends Form {
       notes: reading.notes,
     };
   }
+
+  /*onValueChange(event) {
+    this.setState({
+      selectedOption: event.target.value
+    });
+  }*/
+
   doSubmit = () => {
     saveReading(this.state.data);
     this.props.history.push("/readings");
@@ -65,7 +72,35 @@ class ReadingForm extends Form {
           {this.renderInput("value", "Value")}
           {this.renderSelect("userId", "User ID", this.state.users)}
           {this.renderSelect("email", "Email", this.state.users)}
-          {this.renderInput("preMed", "PreMedication")}
+          <div className="form-check">
+            <label className="form-check-label" for="flexRadioDefault1">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault1"
+                checked
+                value="preMed"
+                //checked={this.state.selectedOption === "preMed"}
+                //onChange={this.onValueChange}
+              />
+              Pre-Medication
+            </label>
+          </div>
+          <div className="form-check">
+            <label className="form-check-label" for="flexRadioDefault2">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault2"
+                value="postMed"
+                //checked={this.state.selectedOption === "postMed"}
+                //onChange={this.onValueChange}
+              />
+              Post-Medication
+            </label>
+          </div>
           {this.renderInput("dateTime", "Date and Time")}
           {this.renderInput("notes", "Notes")}
           {this.renderButton("Save")}
