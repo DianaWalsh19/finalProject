@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import "../dropdownStyle.css";
 
 export default function Dropdown({
   options,
@@ -58,7 +59,7 @@ export default function Dropdown({
               setQuery(e.target.value);
               onChange(null);
             }}
-            onClik={toggle}
+            onClick={toggle}
             onTouchEnd={toggle}
           />
         </div>

@@ -40,6 +40,21 @@ class Readings extends Component {
     this.setState({ selectedUser: user, searchQuery: "", currentPage: 1 });
   };
 
+  showAllReadings = () => {
+    const readings = getReadings();
+    this.setState({ readings, currentPage: 1 });
+  };
+
+  filterPreMed = () => {
+    const readings = getReadings().filter((r) => r.preMed === "preMed");
+    this.setState({ readings, currentPage: 1 });
+  };
+
+  filterPostMed = () => {
+    const readings = getReadings().filter((r) => r.preMed === "postMed");
+    this.setState({ readings, currentPage: 1 });
+  };
+
   handleSearch = (query) => {
     this.setState({ searchQuery: query, currentPage: 1 });
   };
@@ -93,10 +108,6 @@ class Readings extends Component {
         r.preMed.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
 
-    /*const filtered = 
-      ? allReadings.filter((r) => r.dateTime === selectedOption.dateTime)
-      : allReadings;*/
-
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
     const readings = paginate(sorted, currentPage, pageSize);
@@ -115,13 +126,32 @@ class Readings extends Component {
     return (
       <div className="row">
         <div className="col-3">
-          <ListGroup
-            items={this.state.users}
-            selectedItem={this.state.selectedUser}
-            onItemSelect={this.handleUserSelect}
-          />
-        </div>
-        <div className="col">
+          <h3>Filters</h3>
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg btn-block"
+              onClick={this.showAllReadings}
+            >
+              See All Readings
+            </button>
+          </div>
+          <div className="btn-group" role="group" aria-label="Basic example">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={this.filterPreMed}
+            >
+              Pre-Medication
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={this.filterPostMed}
+            >
+              Post-Medication
+            </button>
+          </div>
           <div style={{ width: 200 }}>
             <Dropdown
               prompt="Select Date and Time"
@@ -132,9 +162,10 @@ class Readings extends Component {
               onChange={(val) => this.handleDateDropdown(val)}
             />
           </div>
+        </div>
+        <div className="col">
           <div style={{ width: 200 }}></div>
           <p>Showing {totalCount} readings in the database.</p>
-          <SearchBox value={searchQuery} onChange={this.handleSearch} />
           <ReadingsTable
             readings={readings}
             sortColumn={sortColumn}
