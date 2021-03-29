@@ -42,7 +42,7 @@ class Readings extends Component {
 
   showAllReadings = () => {
     const readings = getReadings();
-    this.setState({ readings, currentPage: 1 });
+    this.setState({ readings, selectedOption: "", currentPage: 1 });
   };
 
   filterPreMed = () => {
@@ -60,7 +60,7 @@ class Readings extends Component {
   };
 
   handleDateDropdown = (selectedOption) => {
-    this.setState({ selectedOption });
+    this.setState({ selectedOption, currentPage: 1 });
   };
 
   handleSort = (sortColumn) => {
@@ -152,6 +152,7 @@ class Readings extends Component {
               Post-Medication
             </button>
           </div>
+          <h3 style={{ paddingTop: 50 }}>Filter by date</h3>
           <div style={{ width: 200 }}>
             <Dropdown
               prompt="Select Date and Time"
