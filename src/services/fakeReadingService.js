@@ -40,9 +40,18 @@ const readings = [
   {
     _id: "5sdf6s65f55afdsdf2024",
     user: { _id: "5sdf6s65f55afcccd2003", email: "patient3@patients.com" },
-    value: 400,
+    value: 800,
     preMed: "postMed",
     dateTime: "2020-01-25T19:14:28.8092",
+    notes: "sfdsdfsdf",
+  },
+
+  {
+    _id: "5sdf6s65f55afdsdf2025",
+    user: { _id: "5sdf6s65f55afcccd2003", email: "patient3@patients.com" },
+    value: 1200,
+    preMed: "postMed",
+    dateTime: "2020-02-25T19:14:28.8092",
     notes: "sfdsdfsdf",
   },
 ];
