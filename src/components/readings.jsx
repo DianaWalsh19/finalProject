@@ -1,9 +1,7 @@
 import React, { Component, useState } from "react";
 import ReadingsTable from "./readingsTable";
-import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
 import Dropdown from "./common/dropdown";
-import SearchBox from "./searchBox";
 import { getReadings, deleteReading } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
@@ -77,20 +75,6 @@ class Readings extends Component {
       searchQuery,
       readings: allReadings,
     } = this.state;
-
-    /*let filtered = allReadings;
-    if (searchQuery && selectedUser)
-      filtered = allReadings.filter(
-        (r) =>
-          r.preMed.toLowerCase().startsWith(searchQuery.toLowerCase()) &&
-          r.user._id === selectedUser._id
-      );
-    else if (selectedUser && selectedUser._id)
-      filtered = allReadings.filter((r) => r.user._id === selectedUser._id);
-    else if (searchQuery || (searchQuery && selectedUser._id === ""))
-      filtered = allReadings.filter((r) =>
-        r.preMed.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );*/
 
     let filtered = allReadings;
     if (selectedOption && searchQuery)

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
 import Select from "./select";
+import Check from "./check";
 
 class Form extends Component {
   state = {
@@ -76,6 +77,36 @@ class Form extends Component {
 
     return (
       <Input
+        type={type}
+        name={name}
+        value={data[name]}
+        label={label}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  renderDateTime(name, label, type = "datetime-local") {
+    const { data, errors } = this.state;
+
+    return (
+      <Input
+        type={type}
+        name={name}
+        value={data[name]}
+        label={label}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  renderCheck(name, label, type = "radio") {
+    const { data, errors } = this.state;
+
+    return (
+      <Check
         type={type}
         name={name}
         value={data[name]}
