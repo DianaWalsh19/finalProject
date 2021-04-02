@@ -31,11 +31,6 @@ const NavBar = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/users">
-              My Profile
-            </NavLink>
-          </li>
-          <li className="nav-item">
             <NavLink className="nav-link" to="/login">
               Login
             </NavLink>
@@ -52,15 +47,6 @@ const NavBar = () => {
               style={{ marginLeft: 40 }}
             >
               New Reading
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="/experiment"
-              className="btn btn-danger"
-              style={{ marginLeft: 500 }}
-            >
-              EXPERIMENT
             </Link>
           </li>
         </ul>

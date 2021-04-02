@@ -26,3 +26,9 @@ code {
   color: #333;
   cursor: default;
 }
+
+.flexContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}

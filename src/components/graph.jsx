@@ -70,8 +70,6 @@ class Graph extends Component {
     const { length: count } = this.state.readings;
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
 
-    if (count === 0) return <p>There are no readings in the database.</p>;
-
     const { totalCount, data: readings } = this.getPagedData();
     const options = {
       orientation: "landscape",
