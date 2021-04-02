@@ -5,6 +5,7 @@ import Dropdown from "./common/dropdown";
 import { getReadings, deleteReading } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
+import DatePicker from "./common/datePicker";
 import _ from "lodash";
 
 class Readings extends Component {
@@ -137,6 +138,9 @@ class Readings extends Component {
             </button>
           </div>
           <h3 style={{ paddingTop: 50 }}>Filter by date</h3>
+          <div>
+            <DatePicker />
+          </div>
           <div style={{ width: 200 }}>
             <Dropdown
               prompt="Select Date and Time"

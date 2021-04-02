@@ -3,6 +3,7 @@
 
 import React, { Component, useState } from "react";
 import Dropdown from "./common/dropdown";
+import DatePicker from "./common/datePicker";
 import { getReadings } from "../services/fakeReadingService";
 import _ from "lodash";
 import Pdf from "react-to-pdf";
@@ -107,6 +108,9 @@ class Graph extends Component {
             </button>
           </div>
           <h3 style={{ paddingTop: 50 }}>Filter by date</h3>
+          <div>
+            <DatePicker />
+          </div>
           <div style={{ width: 200 }}>
             <Dropdown
               prompt="Select Date and Time"
