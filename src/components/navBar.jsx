@@ -1,57 +1,48 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import { Navbar, Nav, Container } from "react-bootstrap";
 
 const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">
-        Astma App
-      </Link>
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+    <>
+      <Navbar
+        collapseOnSelect
+        expand="sm"
+        bg="dark"
+        variant="dark"
+        style={{ marginBottom: 50 }}
       >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/readings">
-              My Readings
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/graph">
-              Graphic
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/login">
-              Login
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/register">
-              Register
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <Link
-              to="/readings/new"
-              className="btn btn-primary"
-              style={{ marginLeft: 40 }}
-            >
-              New Reading
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+        <Container>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav>
+              <Link className="navbar-brand" to="/">
+                Astma App
+              </Link>
+              <Link className="nav-link" to="/readings">
+                My Readings
+              </Link>
+              <NavLink className="nav-link" to="/graph">
+                Graphic
+              </NavLink>
+              <NavLink className="nav-link" to="/login">
+                Login
+              </NavLink>
+              <NavLink className="nav-link" to="/register">
+                Register
+              </NavLink>
+              <Link
+                to="/readings/new"
+                className="btn btn-primary"
+                style={{ marginLeft: 40 }}
+              >
+                New Reading
+              </Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </>
   );
 };
 

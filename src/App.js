@@ -25,8 +25,8 @@ class App extends Component {
             <Route path="/readings/new" component={ReadingForm} />
             <Route path="/readings" component={Readings} />
             <Route path="/graph" component={Graph} />
-            <Route path="/not-found" component={NotFound} />
             <Redirect from="/" exact to="/users" />
+            <Route path="/not-found" component={NotFound} />
             <Redirect to="/not-found" />
           </Switch>
         </main>
