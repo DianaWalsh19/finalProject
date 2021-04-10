@@ -3,6 +3,7 @@ import ReadingsTable from "./readingsTable";
 import { Link } from "react-router-dom";
 import { getReadings } from "../services/fakeReadingService";
 import {
+  ResponsiveContainer,
   LineChart,
   Line,
   XAxis,
@@ -68,12 +69,10 @@ class Users extends Component {
             </Link>
           </div>
         </div>
-        <div className="flexContainer">
+        <div className="col">
           <div>
-            <div className="col">
+            <ResponsiveContainer width="90%" height={400}>
               <LineChart
-                width={500}
-                height={400}
                 data={this.state.readings}
                 margin={{
                   top: 5,
@@ -95,17 +94,14 @@ class Users extends Component {
                 />
                 <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
               </LineChart>
-            </div>
-
-            <Link to="/graph">
-              <button
-                type="button"
-                className="btn btn-primary btn-lg btn-block"
-              >
-                See Graph
-              </button>
-            </Link>
+            </ResponsiveContainer>
           </div>
+
+          <Link to="/graph">
+            <button type="button" className="btn btn-primary btn-lg btn-block">
+              See Graph
+            </button>
+          </Link>
         </div>
       </div>
     );

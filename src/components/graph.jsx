@@ -8,6 +8,7 @@ import { getReadings } from "../services/fakeReadingService";
 import _ from "lodash";
 import Pdf from "react-to-pdf";
 import {
+  ResponsiveContainer,
   LineChart,
   Line,
   XAxis,
@@ -44,6 +45,8 @@ class Graph extends Component {
     this.setState({ readings, currentPage: 1 });
   };
 
+  filterToday = () => {};
+
   handleSearch = (query) => {
     this.setState({ searchQuery: query, currentPage: 1 });
   };
@@ -54,7 +57,6 @@ class Graph extends Component {
 
   getPagedData = () => {
     const {
-      sortColumn,
       selectedOption,
       searchQuery,
       readings: allReadings,
@@ -63,22 +65,40 @@ class Graph extends Component {
 
     let filtered = allReadings;
 
+    if (selectedOption && searchQuery)
+      filtered = allReadings.filter(
+        (r) =>
+          r.dateTime === selectedOption.dateTime &&
+          r.preMed.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    else if (selectedOption)
+      filtered = allReadings.filter(
+        (r) => r.dateTime === selectedOption.dateTime
+      );
+    else if (searchQuery)
+      filtered = allReadings.filter((r) =>
+        r.preMed.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+
     return { totalCount: filtered.length, data: this.state.readings };
   };
 
   render() {
     const { length: count } = this.state.readings;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+    const { pageSize, currentPage, searchQuery } = this.state;
+
+    if (count === 0) return <p>There are no readings in the database.</p>;
 
     const { totalCount, data: readings } = this.getPagedData();
+
     const options = {
       orientation: "landscape",
     };
     const ref = React.createRef();
 
     return (
-      <div className="row">
-        <div className="col-3">
+      <div className="row flexContainer">
+        <div className="col-3 flexItem">
           <h3>Filters</h3>
           <div>
             <button
@@ -107,6 +127,34 @@ class Graph extends Component {
           </div>
           <h3 style={{ paddingTop: 50 }}>Filter by date</h3>
           <div>
+            <div>
+              <button
+                style={{ width: 200, textAlign: "left" }}
+                type="button"
+                className="btn btn-light"
+                onClick={this.filterToday}
+              >
+                Today
+              </button>
+              <button
+                style={{ width: 200, textAlign: "left" }}
+                type="button"
+                className="btn btn-light"
+                value={this.state.curTime - 1}
+                onClick={(value) =>
+                  this.handleDateDropdown(this.state.curTime - 1)
+                }
+              >
+                Yesterday
+              </button>
+              <button
+                style={{ width: 200, textAlign: "left" }}
+                type="button"
+                className="btn btn-light"
+              >
+                Last 7 days
+              </button>
+            </div>
             <DatePicker />
           </div>
           <div style={{ width: 200 }}>
@@ -120,36 +168,35 @@ class Graph extends Component {
             />
           </div>
         </div>
-        <div className="col">
-          <div className="row" ref={ref}>
-            <div className="col-3"></div>
-            <div className="col">
-              <LineChart
-                width={800}
-                height={500}
-                data={this.state.readings}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dateTime" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-              </LineChart>
-            </div>
-          </div>
+        <div className="col" ref={ref}>
+          <p>Showing {totalCount} readings in the database.</p>
+          <ResponsiveContainer width="90%" height={400}>
+            <LineChart
+              className="graphItem"
+              width={800}
+              height={500}
+              data={this.state.readings}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="dateTime" />
+              <YAxis dataKey="value" />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
+              <Line type="monotone" dataKey="value" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
           <div>
             <Pdf
               targetRef={ref}

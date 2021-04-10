@@ -19,6 +19,7 @@ class Readings extends Component {
     searchQuery: "",
     selectedUser: null,
     sortColumn: { path: "user.email", order: "asc" },
+    curTime: new Date(),
   };
 
   componentDidMount() {
@@ -139,6 +140,35 @@ class Readings extends Component {
           </div>
           <h3 style={{ paddingTop: 50 }}>Filter by date</h3>
           <div>
+            <div>
+              <button
+                style={{ width: 200, textAlign: "left" }}
+                type="button"
+                className="btn btn-light"
+                value={this.state.selectedOption}
+                onClick={(val) => this.handleDateDropdown(this.state.curTime)}
+              >
+                Today
+              </button>
+              <button
+                style={{ width: 200, textAlign: "left" }}
+                type="button"
+                className="btn btn-light"
+                value={this.state.curTime - 1}
+                onClick={(value) =>
+                  this.handleDateDropdown(this.state.curTime - 1)
+                }
+              >
+                Yesterday
+              </button>
+              <button
+                style={{ width: 200, textAlign: "left" }}
+                type="button"
+                className="btn btn-light"
+              >
+                Last 7 days
+              </button>
+            </div>
             <DatePicker />
           </div>
           <div style={{ width: 200 }}>
