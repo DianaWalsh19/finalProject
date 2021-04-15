@@ -6,6 +6,7 @@ import { getReadings, deleteReading } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
 import DatePicker from "./common/datePicker";
+import moment from "moment";
 import _ from "lodash";
 
 class Readings extends Component {
@@ -19,7 +20,6 @@ class Readings extends Component {
     searchQuery: "",
     selectedUser: null,
     sortColumn: { path: "user.email", order: "asc" },
-    curTime: new Date(),
   };
 
   componentDidMount() {
@@ -57,6 +57,16 @@ class Readings extends Component {
 
   handleSearch = (query) => {
     this.setState({ searchQuery: query, currentPage: 1 });
+  };
+
+  handleToday = () => {
+    moment().format();
+    const today = moment(0, "HH");
+    console.log(today);
+    const readings = getReadings().filter((r) => moment(r.dateTime) >= today);
+    console.log(getReadings());
+    console.log({ readings });
+    this.setState({ readings, currentPage: 1 });
   };
 
   handleDateDropdown = (selectedOption) => {
@@ -145,8 +155,7 @@ class Readings extends Component {
                 style={{ width: 200, textAlign: "left" }}
                 type="button"
                 className="btn btn-light"
-                value={this.state.selectedOption}
-                onClick={(val) => this.handleDateDropdown(this.state.curTime)}
+                onClick={this.handleToday}
               >
                 Today
               </button>
@@ -154,10 +163,6 @@ class Readings extends Component {
                 style={{ width: 200, textAlign: "left" }}
                 type="button"
                 className="btn btn-light"
-                value={this.state.curTime - 1}
-                onClick={(value) =>
-                  this.handleDateDropdown(this.state.curTime - 1)
-                }
               >
                 Yesterday
               </button>

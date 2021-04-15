@@ -26,6 +26,8 @@ class Graph extends Component {
     selectedOption: "",
     searchQuery: "",
   };
+  //Two values are needed, a function can be used to create a second value depending on if the reading
+  //is pre or post med. And a second line needs to be added to the graph.
 
   componentDidMount() {
     this.setState({ readings: getReadings() });
@@ -194,7 +196,12 @@ class Graph extends Component {
                 stroke="#8884d8"
                 activeDot={{ r: 8 }}
               />
-              <Line type="monotone" dataKey="value" stroke="#82ca9d" />
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
             </LineChart>
           </ResponsiveContainer>
           <div>

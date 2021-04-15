@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Readings from "./components/readings";
 import Users from "./components/users";
@@ -10,7 +11,23 @@ import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 import Experiment from "./components/experiment";
 
+const apiEndpoint = "https://jsonplaceholder.typicode.com/posts";
+
 class App extends Component {
+  state = {
+    posts: [],
+  };
+
+  async componentDidMount() {
+    const { data: posts } = await axios.get(apiEndpoint);
+    this.setState({ posts });
+  }
+
+  handleAdd = async () => {
+    const obj = { title: "a", body: "b" };
+    const { data: posts } = await axios.post(apiEndpoint, obj);
+  };
+
   render() {
     return (
       <React.Fragment>

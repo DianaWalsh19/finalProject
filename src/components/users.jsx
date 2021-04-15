@@ -26,6 +26,7 @@ class Users extends Component {
   componentDidMount() {
     this.setState({ readings: getReadings() });
   }
+
   showAllReadings = () => {
     const readings = getReadings();
     this.setState({ readings, selectedOption: "", currentPage: 1 });
@@ -50,14 +51,18 @@ class Users extends Component {
     const ref = React.createRef();
     return (
       <div className="row">
-        <h3>My Readings</h3>
-        <div className="flexContainer">
-          <ReadingsTable
-            readings={readings}
-            sortColumn={sortColumn}
-            onDelete={this.handleDelete}
-            onSort={this.handleSort}
-          />
+        <div style={{ width: "100%", paddingBottom: 40 }}>
+          <h3>My Readings</h3>
+        </div>
+        <div className="col" style={{ width: "40%" }}>
+          <div>
+            <ReadingsTable
+              readings={readings}
+              sortColumn={sortColumn}
+              onDelete={this.handleDelete}
+              onSort={this.handleSort}
+            />
+          </div>
           <div>
             <Link to="/readings">
               <button
