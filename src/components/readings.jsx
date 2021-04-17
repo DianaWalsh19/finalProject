@@ -1,14 +1,13 @@
 import React, { Component, useState } from "react";
 import ReadingsTable from "./readingsTable";
 import Pagination from "./common/pagination";
-import Dropdown from "./common/dropdown";
 import { getReadings, deleteReading } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
-import DatePicker from "./common/datePicker";
 import moment from "moment";
 import _ from "lodash";
-import { DateRangePicker } from "react-dates";
+//import DatePicker from "./common/datePicker";
+//import { DateRangePicker } from "react-dates";
 
 class Readings extends Component {
   state = {
@@ -24,9 +23,7 @@ class Readings extends Component {
   };
 
   componentDidMount() {
-    const users = [{ _id: "", email: "All Users" }, ...getUsers()];
-    let dateFiltered = "";
-    this.setState({ readings: getReadings(), users, dateFiltered });
+    this.setState({ readings: getReadings() });
   }
 
   handleDelete = (reading) => {
@@ -83,6 +80,7 @@ class Readings extends Component {
     this.setState({ readings, currentPage: 1, dateFiltered: "sevenDays" });
   };
 
+  /*
   handleDatePicker = () => {
     moment().format();
     const startDate = DatePicker.startDate;
@@ -95,6 +93,7 @@ class Readings extends Component {
     console.log({ readings });
     this.setState({ readings, currentPage: 1 });
   };
+  */
 
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
@@ -105,25 +104,25 @@ class Readings extends Component {
       pageSize,
       currentPage,
       sortColumn,
-      dateFiltered,
       readings: allReadings,
     } = this.state;
 
     let filtered = allReadings;
 
-    /*if (selectedOption && searchQuery)
+    //Attempt to combine both date and medication filters.
+    /*if (selectedDate && medSelect)
       filtered = allReadings.filter(
         (r) =>
-          r.dateTime === selectedOption.dateTime &&
-          r.preMed.toLowerCase().startsWith(searchQuery.toLowerCase())
+          r.dateTime === selectedDate.dateTime &&
+          r.preMed.toLowerCase().startsWith(medSelect.toLowerCase())
       );
-    else if (selectedOption)
+    else if (selectedDate)
       filtered = allReadings.filter(
-        (r) => r.dateTime === selectedOption.dateTime
+        (r) => r.dateTime === selectedDate.dateTime
       );
-    else if (searchQuery)
+    else if (medSelect)
       filtered = allReadings.filter((r) =>
-        r.preMed.toLowerCase().startsWith(searchQuery.toLowerCase())
+        r.preMed.toLowerCase().startsWith(medSelect.toLowerCase())
       );*/
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
@@ -133,7 +132,7 @@ class Readings extends Component {
 
   render() {
     const { length: count } = this.state.readings;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+    const { pageSize, currentPage, sortColumn } = this.state;
 
     const { totalCount, data: readings } = this.getPagedData();
 
@@ -194,7 +193,6 @@ class Readings extends Component {
                 Last 7 days
               </button>
             </div>
-            <DatePicker />
           </div>
         </div>
         <div className="col">

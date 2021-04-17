@@ -1,7 +1,6 @@
 import React from "react";
 
 const Check = ({ name, label, options, error, ...rest }) => {
-  console.log(name);
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>

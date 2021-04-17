@@ -16,15 +16,16 @@ import {
 class Users extends Component {
   state = {
     readings: [],
-    users: [],
-    options: [],
-    selectedOption: "",
-    searchQuery: "",
     sortColumn: { path: "user.email", order: "asc" },
   };
 
   componentDidMount() {
     this.setState({ readings: getReadings() });
+    //Attempt to pass only the first three readings as a preview
+    /*const input = getReadings();
+    const readings = [input[0], input[1], input[2]];
+    console.log(readings);
+    this.setState(readings);*/
   }
 
   showAllReadings = () => {
@@ -34,15 +35,12 @@ class Users extends Component {
 
   getPagedData = () => {
     const { readings: allReadings, ref } = this.state;
-
-    let filtered = allReadings;
-
-    return { totalCount: filtered.length, data: this.state.readings };
+    return { totalCount: allReadings.length, data: this.state.readings };
   };
 
   render() {
     const { length: count } = this.state.readings;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+    const { pageSize, currentPage, sortColumn } = this.state;
 
     const { totalCount, data: readings } = this.getPagedData();
     const options = {
@@ -56,12 +54,7 @@ class Users extends Component {
         </div>
         <div className="col" style={{ width: "40%" }}>
           <div>
-            <ReadingsTable
-              readings={readings}
-              sortColumn={sortColumn}
-              onDelete={this.handleDelete}
-              onSort={this.handleSort}
-            />
+            <p>Showing {totalCount} readings in the database.</p>
           </div>
           <div>
             <Link to="/readings">
