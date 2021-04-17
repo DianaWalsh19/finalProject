@@ -8,13 +8,14 @@ import { paginate } from "../utils/paginate";
 import DatePicker from "./common/datePicker";
 import moment from "moment";
 import _ from "lodash";
+import { DateRangePicker } from "react-dates";
 
 class Readings extends Component {
   state = {
     readings: [],
     users: [],
     options: [],
-    selectedOption: "",
+    dateFiltered: "",
     currentPage: 1,
     pageSize: 4,
     searchQuery: "",
@@ -24,7 +25,8 @@ class Readings extends Component {
 
   componentDidMount() {
     const users = [{ _id: "", email: "All Users" }, ...getUsers()];
-    this.setState({ readings: getReadings(), users });
+    let dateFiltered = "";
+    this.setState({ readings: getReadings(), users, dateFiltered });
   }
 
   handleDelete = (reading) => {
@@ -36,13 +38,9 @@ class Readings extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleUserSelect = (user) => {
-    this.setState({ selectedUser: user, searchQuery: "", currentPage: 1 });
-  };
-
   showAllReadings = () => {
     const readings = getReadings();
-    this.setState({ readings, selectedOption: "", currentPage: 1 });
+    this.setState({ readings, dateFiltered: "", currentPage: 1 });
   };
 
   filterPreMed = () => {
@@ -55,22 +53,47 @@ class Readings extends Component {
     this.setState({ readings, currentPage: 1 });
   };
 
-  handleSearch = (query) => {
-    this.setState({ searchQuery: query, currentPage: 1 });
-  };
-
   handleToday = () => {
     moment().format();
     const today = moment(0, "HH");
-    console.log(today);
-    const readings = getReadings().filter((r) => moment(r.dateTime) >= today);
+    const tomorrow = moment().add(1, "days").startOf("day");
+    const readings = getReadings().filter(
+      (r) => moment(r.dateTime) >= today && moment(r.dateTime) < tomorrow
+    );
+    this.setState({ readings, currentPage: 1, dateFiltered: "today" });
+  };
+
+  handleYesterday = () => {
+    moment().format();
+    const today = moment(0, "HH");
+    const yesterday = moment().subtract(1, "days").startOf("day");
+    const readings = getReadings().filter(
+      (r) => moment(r.dateTime) >= yesterday && moment(r.dateTime) < today
+    );
+    this.setState({ readings, currentPage: 1, dateFiltered: "yesterday" });
+  };
+
+  handleSevenDays = () => {
+    moment().format();
+    const startDate = moment().add(1, "days").startOf("day");
+    const endDate = moment().subtract(7, "days").startOf("day");
+    const readings = getReadings().filter(
+      (r) => moment(r.dateTime) >= endDate && moment(r.dateTime) <= startDate
+    );
+    this.setState({ readings, currentPage: 1, dateFiltered: "sevenDays" });
+  };
+
+  handleDatePicker = () => {
+    moment().format();
+    const startDate = DatePicker.startDate;
+    const endDate = DatePicker.endDate;
+    console.log(startDate, endDate);
+    const readings = getReadings().filter(
+      (r) => moment(r.dateTime) >= endDate && moment(r.dateTime) <= startDate
+    );
     console.log(getReadings());
     console.log({ readings });
     this.setState({ readings, currentPage: 1 });
-  };
-
-  handleDateDropdown = (selectedOption) => {
-    this.setState({ selectedOption, currentPage: 1 });
   };
 
   handleSort = (sortColumn) => {
@@ -82,14 +105,13 @@ class Readings extends Component {
       pageSize,
       currentPage,
       sortColumn,
-      selectedUser,
-      selectedOption,
-      searchQuery,
+      dateFiltered,
       readings: allReadings,
     } = this.state;
 
     let filtered = allReadings;
-    if (selectedOption && searchQuery)
+
+    /*if (selectedOption && searchQuery)
       filtered = allReadings.filter(
         (r) =>
           r.dateTime === selectedOption.dateTime &&
@@ -102,20 +124,16 @@ class Readings extends Component {
     else if (searchQuery)
       filtered = allReadings.filter((r) =>
         r.preMed.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );
+      );*/
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
     const readings = paginate(sorted, currentPage, pageSize);
-
     return { totalCount: filtered.length, data: readings };
   };
 
   render() {
     const { length: count } = this.state.readings;
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
-
-    if (count === 0) return <p>There are no readings in the database.</p>;
 
     const { totalCount, data: readings } = this.getPagedData();
 
@@ -163,6 +181,7 @@ class Readings extends Component {
                 style={{ width: 200, textAlign: "left" }}
                 type="button"
                 className="btn btn-light"
+                onClick={this.handleYesterday}
               >
                 Yesterday
               </button>
@@ -170,21 +189,12 @@ class Readings extends Component {
                 style={{ width: 200, textAlign: "left" }}
                 type="button"
                 className="btn btn-light"
+                onClick={this.handleSevenDays}
               >
                 Last 7 days
               </button>
             </div>
             <DatePicker />
-          </div>
-          <div style={{ width: 200 }}>
-            <Dropdown
-              prompt="Select Date and Time"
-              id="_id"
-              label="dateTime"
-              options={getReadings()}
-              value={this.state.selectedOption}
-              onChange={(val) => this.handleDateDropdown(val)}
-            />
           </div>
         </div>
         <div className="col">
