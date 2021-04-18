@@ -38,13 +38,13 @@ class App extends Component {
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/logout" component={Logout} />
-            <ProtectedRoute path="/users" component={Users} />
+            <Route path="/users" component={Users} />
             <Route path="/experiment" component={Experiment} />
-            <ProtectedRoute path="/readings/:id" component={ReadingForm} />
-            <ProtectedRoute path="/readings/new" component={ReadingForm} />
-            <ProtectedRoute path="/readings" component={Readings} />
-            <ProtectedRoute path="/graph" component={Graph} />
-            <ProtectedRoute from="/" exact to="/users" />
+            <Route path="/readings/:id" component={ReadingForm} />
+            <Route path="/readings/new" component={ReadingForm} />
+            <Route path="/readings" component={Readings} />
+            <Route path="/graph" component={Graph} />
+            <Route from="/" exact to="/users" />
             <Route path="/not-found" component={NotFound} />
             <Redirect to="/not-found" />
           </Switch>
