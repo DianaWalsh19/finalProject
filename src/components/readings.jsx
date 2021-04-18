@@ -1,9 +1,10 @@
 import React, { Component, useState } from "react";
 import ReadingsTable from "./readingsTable";
 import Pagination from "./common/pagination";
-import { getReadings, deleteReading } from "../services/fakeReadingService";
+import { getReadings, deleteReading } from "../services/readingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
+import { toast } from "react-toastify";
 import moment from "moment";
 import _ from "lodash";
 //import DatePicker from "./common/datePicker";
@@ -12,7 +13,6 @@ import _ from "lodash";
 class Readings extends Component {
   state = {
     readings: [],
-    users: [],
     options: [],
     dateFiltered: "",
     currentPage: 1,
@@ -22,13 +22,27 @@ class Readings extends Component {
     sortColumn: { path: "user.email", order: "asc" },
   };
 
-  componentDidMount() {
-    this.setState({ readings: getReadings() });
+  async componentDidMount() {
+    /*const { data } = await getUsers();
+    const users = [{ _id: "", email: "" }, ...data];*/
+
+    const { data } = await getReadings();
+    const readings = [{ _id: "", value: "", dateTime: "" }, ...data];
+    this.setState({ readings: getReadings(), readings });
   }
 
-  handleDelete = (reading) => {
-    const readings = this.state.readings.filter((r) => r._id !== reading._id);
+  handleDelete = async (reading) => {
+    const originalReadings = this.state.readings;
+    const readings = originalReadings.filter((r) => r._id !== reading._id);
     this.setState({ readings });
+
+    try {
+      await deleteReading(reading._id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        toast.error("This reading has already been deleted.");
+      this.setState({ readings: originalReadings });
+    }
   };
 
   handlePageChange = (page) => {
@@ -133,6 +147,7 @@ class Readings extends Component {
   render() {
     const { length: count } = this.state.readings;
     const { pageSize, currentPage, sortColumn } = this.state;
+    const { user } = this.props;
 
     const { totalCount, data: readings } = this.getPagedData();
 

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { getReading, saveReading } from "../services/fakeReadingService";
-import { getUsers } from "../services/fakeUserService";
+import { getReading, saveReading } from "../services/readingService";
+import { getUsers } from "../services/userService";
 
 class ReadingForm extends Form {
   state = {
@@ -28,17 +28,26 @@ class ReadingForm extends Form {
     notes: Joi.string().allow("").label("Notes"),
   };
 
-  componentDidMount() {
-    const users = getUsers();
+  async populateUser() {
+    const { data: users } = await getUsers();
     this.setState({ users });
+  }
 
-    const readingId = this.props.match.params.id;
-    if (readingId === "new") return;
+  async populateReading() {
+    try {
+      const readingId = this.props.match.params.id;
+      if (readingId === "new") return;
+      const { data: reading } = await getReading(readingId);
+      this.setState({ data: this.mapToViewModel(reading) });
+    } catch (ex) {
+      if (ex.respose && ex.response.status === 404)
+        this.props.history.replace("/not-found");
+    }
+  }
 
-    const reading = getReading(readingId);
-    if (!reading) return this.props.history.replace("/not-found");
-
-    this.setState({ data: this.mapToViewModel(reading) });
+  async componentDidMount() {
+    await this.populateUser();
+    await this.populateReading();
   }
 
   mapToViewModel(reading) {
@@ -52,8 +61,8 @@ class ReadingForm extends Form {
       notes: reading.notes,
     };
   }
-  doSubmit = () => {
-    saveReading(this.state.data);
+  doSubmit = async () => {
+    await saveReading(this.state.data);
     this.props.history.push("/readings");
   };
 

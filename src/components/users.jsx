@@ -16,6 +16,7 @@ import {
 class Users extends Component {
   state = {
     readings: [],
+    users: [],
     sortColumn: { path: "user.email", order: "asc" },
   };
 
@@ -54,7 +55,7 @@ class Users extends Component {
         </div>
         <div className="col" style={{ width: "40%" }}>
           <div>
-            <p>Showing {totalCount} readings in the database.</p>
+            <p>There are {totalCount} readings in the database.</p>
           </div>
           <div>
             <Link to="/readings">
@@ -90,7 +91,6 @@ class Users extends Component {
                   stroke="#8884d8"
                   activeDot={{ r: 8 }}
                 />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
               </LineChart>
             </ResponsiveContainer>
           </div>

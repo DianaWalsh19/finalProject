@@ -2,7 +2,7 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
-const NavBar = () => {
+const NavBar = ({ user }) => {
   return (
     <>
       <Navbar
@@ -25,19 +25,37 @@ const NavBar = () => {
               <NavLink className="nav-link" to="/graph">
                 Graphic
               </NavLink>
-              <NavLink className="nav-link" to="/login">
-                Login
-              </NavLink>
-              <NavLink className="nav-link" to="/register">
-                Register
-              </NavLink>
-              <Link
-                to="/readings/new"
-                className="btn btn-primary"
-                style={{ marginLeft: 40 }}
-              >
-                New Reading
-              </Link>
+              {!user && (
+                <React.Fragment>
+                  <NavLink className="nav-link" to="/login">
+                    Login
+                  </NavLink>
+                  <NavLink className="nav-link" to="/register">
+                    Register
+                  </NavLink>
+                </React.Fragment>
+              )}
+              {user && (
+                <React.Fragment>
+                  <NavLink className="nav-link" to="/users">
+                    {user.name}
+                  </NavLink>
+                  <NavLink className="nav-link" to="/logout">
+                    Logout
+                  </NavLink>
+                </React.Fragment>
+              )}
+              {user && (
+                <React.Fragment>
+                  <Link
+                    to="/readings/new"
+                    className="btn btn-primary"
+                    style={{ marginLeft: 40 }}
+                  >
+                    New Reading
+                  </Link>
+                </React.Fragment>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
