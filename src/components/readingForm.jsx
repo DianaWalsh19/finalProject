@@ -51,7 +51,7 @@ class ReadingForm extends Form {
   mapToViewModel(reading) {
     return {
       _id: reading._id,
-      userId: reading.user._id,
+      //userId: reading.user._id,
       value: reading.value,
       preMed: reading.preMed,
       dateTime: reading.dateTime,

@@ -4,29 +4,45 @@ import Pagination from "./common/pagination";
 import { getReadings, deleteReading } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
+import { toast } from "react-toastify";
 import moment from "moment";
 import _ from "lodash";
 //import DatePicker from "./common/datePicker";
 //import { DateRangePicker } from "react-dates";
 
-class Readings extends Component {
+class ReadingsApi extends Component {
   state = {
     readings: [],
     options: [],
     dateFiltered: "",
     currentPage: 1,
     pageSize: 4,
+    searchQuery: "",
     selectedUser: null,
-    sortColumn: { path: "dateTime", order: "desc" },
+    sortColumn: { path: "user.email", order: "asc" },
   };
 
-  componentDidMount() {
-    this.setState({ readings: getReadings() });
+  async componentDidMount() {
+    /*const { data } = await getUsers();
+    const users = [{ _id: "", email: "" }, ...data];*/
+
+    const { data } = await getReadings();
+    const readings = [{ _id: "", value: "", dateTime: "" }, ...data];
+    this.setState({ readings: getReadings(), readings });
   }
 
-  handleDelete = (reading) => {
-    const readings = this.state.readings.filter((r) => r._id !== reading._id);
+  handleDelete = async (reading) => {
+    const originalReadings = this.state.readings;
+    const readings = originalReadings.filter((r) => r._id !== reading._id);
     this.setState({ readings });
+
+    try {
+      await deleteReading(reading._id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        toast.error("This reading has already been deleted.");
+      this.setState({ readings: originalReadings });
+    }
   };
 
   handlePageChange = (page) => {
@@ -131,6 +147,7 @@ class Readings extends Component {
   render() {
     const { length: count } = this.state.readings;
     const { pageSize, currentPage, sortColumn } = this.state;
+    const { user } = this.props;
 
     const { totalCount, data: readings } = this.getPagedData();
 
@@ -214,4 +231,4 @@ class Readings extends Component {
   }
 }
 
-export default Readings;
+export default ReadingsApi;

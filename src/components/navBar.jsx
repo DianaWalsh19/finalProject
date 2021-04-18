@@ -22,6 +22,9 @@ const NavBar = ({ user }) => {
               <Link className="nav-link" to="/readings">
                 My Readings
               </Link>
+              <Link className="nav-link" to="/readingsApi">
+                Readings from API
+              </Link>
               <NavLink className="nav-link" to="/graph">
                 Graphic
               </NavLink>
@@ -38,7 +41,7 @@ const NavBar = ({ user }) => {
               {user && (
                 <React.Fragment>
                   <NavLink className="nav-link" to="/users">
-                    {user.name}
+                    {user.email}
                   </NavLink>
                   <NavLink className="nav-link" to="/logout">
                     Logout

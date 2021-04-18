@@ -12,6 +12,7 @@ import RegisterForm from "./components/registerForm";
 import Experiment from "./components/experiment";
 import Logout from "./components/logout";
 import ProtectedRoute from "./components/common/protectedRoute";
+import ReadingsApi from "./components/readingsApi";
 import auth from "./services/authService";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -43,6 +44,7 @@ class App extends Component {
             <Route path="/readings/:id" component={ReadingForm} />
             <Route path="/readings/new" component={ReadingForm} />
             <Route path="/readings" component={Readings} />
+            <Route path="/readingsApi" component={ReadingsApi} />
             <Route path="/graph" component={Graph} />
             <Route from="/" exact to="/users" />
             <Route path="/not-found" component={NotFound} />
