@@ -1,4 +1,6 @@
 import * as usersAPI from "./fakeUserService";
+import http from "./httpService";
+const apiEndpoint = "/readings";
 
 const readings = [
   {
@@ -69,22 +71,14 @@ export function getReadingByDate(dateTime) {
 }
 
 export function saveReading(reading) {
-  let readingInDb = readings.find((r) => r.mid === reading.mid) || {};
-  readingInDb.value = reading.value;
-  readingInDb.user = usersAPI.users.find((u) => u._id === reading.userId);
-  readingInDb.dateTime = reading.dateTime;
-  readingInDb.notes = reading.notes;
-
-  if (!readingInDb._id) {
-    readingInDb._id = Date.now().toString();
-    readings.push(readingInDb);
+  if (reading._id) {
+    const body = { ...reading };
+    delete body._id;
+    return http.put(apiEndpoint + "/" + reading._id, body);
   }
-
-  return readingInDb;
+  return http.post(apiEndpoint, reading);
 }
 
-export function deletereading(id) {
-  let readingInDb = readings.find((r) => r._id === id);
-  readings.splice(readings.indexOf(readingInDb), 1);
-  return readingInDb;
+export function deleteReading(readingId) {
+  return http.delete(apiEndpoint + "/" + readingId);
 }

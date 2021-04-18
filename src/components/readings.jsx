@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import ReadingsTable from "./readingsTable";
 import Pagination from "./common/pagination";
-import { getReadings, deleteReading } from "../services/readingService";
+import { getReadings, deleteReading } from "../services/fakeReadingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
 import { toast } from "react-toastify";

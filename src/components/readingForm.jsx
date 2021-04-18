@@ -9,7 +9,6 @@ class ReadingForm extends Form {
     data: {
       value: "",
       userId: "",
-      email: "",
       preMed: "",
       dateTime: "",
       notes: "",
@@ -21,8 +20,7 @@ class ReadingForm extends Form {
   schema = {
     _id: Joi.string(),
     value: Joi.number().required().min(0).max(1000).label("Value"),
-    userId: Joi.string().required().label("User ID"),
-    email: Joi.string().required().label("Email"),
+    userId: Joi.string().allow("").label("User ID"),
     preMed: Joi.string().required().label("PreMedication"),
     dateTime: Joi.string().required().label("Date and Time"),
     notes: Joi.string().allow("").label("Notes"),
@@ -46,7 +44,7 @@ class ReadingForm extends Form {
   }
 
   async componentDidMount() {
-    await this.populateUser();
+    //await this.populateUser();
     await this.populateReading();
   }
 
@@ -54,7 +52,6 @@ class ReadingForm extends Form {
     return {
       _id: reading._id,
       userId: reading.user._id,
-      email: reading.user.email,
       value: reading.value,
       preMed: reading.preMed,
       dateTime: reading.dateTime,
@@ -72,8 +69,6 @@ class ReadingForm extends Form {
         <h1>New Reading</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("value", "Value")}
-          {this.renderSelect("userId", "User ID", this.state.users)}
-          {this.renderSelect("email", "Email", this.state.users)}
           {this.renderCheck("preMed", "Pre or Post Medication?")}
           {this.renderDateTime("dateTime", "Date")}
           {this.renderInput("notes", "Notes")}
