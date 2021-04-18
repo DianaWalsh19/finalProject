@@ -1,6 +1,6 @@
 {
   "heroku-postbuild": "npm run build",
-  "homepage": "http://DianaWalsh19.github.io/finalProject",
+  "homepage": "https://afternoon-journey-82446.herokuapp.com/",
   "name": "asthma-app",
   "version": "0.1.0",
   "private": true,
