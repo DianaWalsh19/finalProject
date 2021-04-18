@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import ReadingsTable from "./readingsTable";
 import Pagination from "./common/pagination";
-import { getReadings, deleteReading } from "../services/fakeReadingService";
+import { getReadings, deleteReading } from "../services/readingService";
 import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
 import { toast } from "react-toastify";
@@ -55,13 +55,27 @@ class ReadingsApi extends Component {
   };
 
   filterPreMed = () => {
-    const readings = getReadings().filter((r) => r.preMed === "preMed");
-    this.setState({ readings, currentPage: 1 });
+    try {
+      const readings = getReadings().filter((r) => r.preMed === "preMed");
+      this.setState({ readings, currentPage: 1 });
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        toast.error("No readings to filter.");
+      }
+    }
   };
 
   filterPostMed = () => {
-    const readings = getReadings().filter((r) => r.preMed === "postMed");
-    this.setState({ readings, currentPage: 1 });
+    try {
+      const readings = getReadings().filter((r) => r.preMed === "postMed");
+      this.setState({ readings, currentPage: 1 });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404) {
+        const errors = { ...this.state.errors };
+        toast.error("No readings to filter.");
+        this.setState({ errors });
+      }
+    }
   };
 
   handleToday = () => {
@@ -179,35 +193,6 @@ class ReadingsApi extends Component {
             >
               Post-Medication
             </button>
-          </div>
-          <h3 style={{ paddingTop: 50 }}>Filter by date</h3>
-          <div>
-            <div>
-              <button
-                style={{ width: 200, textAlign: "left" }}
-                type="button"
-                className="btn btn-light"
-                onClick={this.handleToday}
-              >
-                Today
-              </button>
-              <button
-                style={{ width: 200, textAlign: "left" }}
-                type="button"
-                className="btn btn-light"
-                onClick={this.handleYesterday}
-              >
-                Yesterday
-              </button>
-              <button
-                style={{ width: 200, textAlign: "left" }}
-                type="button"
-                className="btn btn-light"
-                onClick={this.handleSevenDays}
-              >
-                Last 7 days
-              </button>
-            </div>
           </div>
         </div>
         <div className="col">

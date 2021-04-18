@@ -16,7 +16,7 @@ const NavBar = ({ user }) => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>
-              <Link className="navbar-brand" to="/">
+              <Link className="navbar-brand" to="/users/me">
                 Astma App
               </Link>
               <Link className="nav-link" to="/readings">

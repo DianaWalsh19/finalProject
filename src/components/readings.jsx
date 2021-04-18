@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import ReadingsTable from "./readingsTable";
 import Pagination from "./common/pagination";
 import { getReadings, deleteReading } from "../services/fakeReadingService";
-import { getUsers } from "../services/fakeUserService";
+//import { getUsers } from "../services/fakeUserService";
 import { paginate } from "../utils/paginate";
 import moment from "moment";
 import _ from "lodash";
@@ -12,11 +12,11 @@ import _ from "lodash";
 class Readings extends Component {
   state = {
     readings: [],
-    options: [],
+    //users: [],
+    //options: [],
     dateFiltered: "",
     currentPage: 1,
     pageSize: 4,
-    selectedUser: null,
     sortColumn: { path: "dateTime", order: "desc" },
   };
 
